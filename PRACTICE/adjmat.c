@@ -7,27 +7,34 @@ typedef struct graph{
     int** adj;
 } GRAPH;
 
-
 GRAPH* adjMatOfGraph(){
-    //u: indicates total no of vertices, v: indicates total no of edges
+    //u: no of vertices and v: no of edges
     int u,v,i;
 
+    
     GRAPH* G = (GRAPH*)malloc(sizeof(GRAPH));
+
     if(G == NULL){
         printf("Memory not allocated\n");
+        return NULL;
     }
+
     printf("Enter no of nodes and edges:\n");
     scanf("%d %d",&G->V,&G->E);
     
-    //creating the 2d array
-    G->adj = (int**)malloc(sizeof(int) * G->V * G->V);
+    /*allocates memory for an array of integer pointers, 
+    which will point to the rows of the 2D array representing the adjacency matrix of the graph G*/
+
+    G->adj = (int**)malloc(sizeof(int*) * G->V);
     for (u = 0; u < G->V;  u++){
+        //allocates memory for a row in the adjacency matrix
+        G->adj[u] = (int*)malloc(sizeof(int) * G->V);
         for (v  = 0; v < G->V; v++){
-            //stores 0's in all the cells
+            //intializing all the cells of the matrix to 0
             G->adj[u][v] = 0;
         }
     }
-    printf("Enter node no's in pair for an edge:\n");
+    printf("Enter node no's in pair for an edge (u,v):\n");
     
     for (i = 0; i < G->E; i++){
          scanf("%d %d",&u, &v);
@@ -50,7 +57,8 @@ void display(GRAPH* G){
 
 int main(){
     GRAPH* G = adjMatOfGraph();
-    display(G);
+    if (G == NULL){
+        return 1;
+    }
     return 0;
 }
-
